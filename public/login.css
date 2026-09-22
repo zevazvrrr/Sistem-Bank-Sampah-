@@ -1,0 +1,203 @@
+/* =============================================
+   BANK SAMPAH - login.css
+   Halaman Login (khusus, tidak pakai sidebar)
+   ============================================= */
+
+:root {
+  --primary-dark: #065f34;
+  --primary: #0d7a41;
+  --text-navy: #16233d;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --bg-page: #f4f6f9;
+  --bg-white: #ffffff;
+  --danger: #dc2626;
+  --danger-bg: #fde8e8;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg-page);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 48px 56px;
+  box-shadow: 0 4px 24px rgba(16, 24, 40, 0.06);
+}
+
+.login-logo {
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--text-navy);
+  letter-spacing: 0.5px;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-top: 6px;
+  margin-bottom: 28px;
+}
+
+.alert-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 14.5px;
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+
+.alert-error svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-navy);
+  margin-bottom: 8px;
+}
+
+.form-group label svg { width: 16px; height: 16px; }
+
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.forgot-link {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.input-wrap { position: relative; }
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  background: #fbfcfd;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  background: #fff;
+}
+
+.toggle-pass {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  font-size: 14.5px;
+  color: var(--text-navy);
+}
+
+.remember-row input { width: 17px; height: 17px; accent-color: var(--primary); }
+
+.btn-login {
+  width: 100%;
+  padding: 15px;
+  background: var(--primary-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.btn-login:hover { background: #054a29; }
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 26px 0 20px;
+}
+
+.signup-text {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14.5px;
+  margin-bottom: 16px;
+}
+
+.btn-register {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  background: #eef2fb;
+  color: var(--primary-dark);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.btn-register:hover { background: #e4eaf7; }
+
+.footer-copy {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 28px;
+}
