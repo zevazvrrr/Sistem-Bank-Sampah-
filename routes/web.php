@@ -6,3 +6,6 @@ use App\Http\Controllers\PageController; // Wajib ditambahkan di Laravel 11
 Route::get('/', [PageController::class, 'index']);
 Route::get('/about', [PageController::class, 'about']);
 Route::get('/service', [PageController::class, 'service']);
+Route::get('/setoran', [PageController::class, 'setoran']);
+Route::get('/setoran-master', [PageController::class, 'setoran_master']);
+Route::get('/setoran2', [PageController::class, 'setoran2']);
