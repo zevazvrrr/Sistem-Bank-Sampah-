@@ -20,14 +20,17 @@
     <h1 class="login-title">BANK SAMPAH</h1>
     <p class="login-subtitle">Layanan Bank Sampah Terpadu</p>
 
-    <div class="alert-error">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/>
-      </svg>
-      Username atau password salah
-    </div>
+    @if ($errors->has('error'))
+      <div class="alert-error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/>
+        </svg>
+        {{ $errors->first('error') }}
+      </div>
+    @endif
 
-    <form action="#" method="POST">
+    <form action="{{ url('/login-process') }}" method="POST">
+      @csrf
       <div class="form-group">
         <label for="username">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
