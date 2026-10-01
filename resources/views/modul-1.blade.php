@@ -29,8 +29,8 @@
       </div>
     @endif
 
-    <form action="{{ url('/login-process') }}" method="POST">
-      @csrf
+    <form action="/dashboard" method="GET">
+    @csrf
       <div class="form-group">
         <label for="username">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
@@ -59,6 +59,12 @@
         <input type="checkbox" name="remember">
         Ingat saya di perangkat ini
       </label>
+
+      @if ($errors->has('error'))
+        <div style="color: red; margin-bottom: 10px;">
+            {{ $errors->first('error') }}
+        </div>
+      @endif
 
       <button type="submit" class="btn-login">
         Masuk ke Sistem
