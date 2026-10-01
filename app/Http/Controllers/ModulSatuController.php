@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ModulSatuController extends Controller
 {
-    // Menampilkan form login
+    // form login
     public function index()
     {
-        return view('modul-1'); // Pastikan nama view sesuai (login.blade.php)
+        return view('auth.login'); // pastikan nama view sesuai (login.blade.php)
     }
 
-    // Memproses submit login
+    // submit login
     public function login(Request $request)
     {
-        // 1. Validasi input
+        // 1. validasi input
         $credentials = $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -26,17 +26,17 @@ class ModulSatuController extends Controller
         if (Auth::attempt($credentials, $request->has('remember'))) {
             $request->session()->regenerate();
 
-            // Login berhasil -> arahkan ke dashboard
+            // login berhasil -> arahkan ke dashboard
             return redirect()->intended('/dashboard');
         }
 
-        // 3. Login gagal -> kembalikan dengan pesan error
+        // 3. login gagal -> kembalikan dengan pesan error
         return back()->withErrors([
             'error' => 'Username atau password salah',
         ])->onlyInput('username');
     }
 
-    // Memproses logout
+    // proses logout
     public function logout(Request $request)
     {
         Auth::logout();
@@ -46,7 +46,7 @@ class ModulSatuController extends Controller
         return redirect('/modul-1');
     }
 
-    // Menampilkan Dashboard
+    // dashboard
     public function dashboard()
     {
         return view('dashboard');
