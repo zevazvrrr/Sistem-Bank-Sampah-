@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ModulSatuController;
-
+use App\Http\Controllers\NasabahController;
 
 // =========================
 // LOGIN
@@ -58,3 +58,12 @@ Route::get('/input_sampah', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+// =========================
+// ROUTE NASABAH
+// =========================
+
+Route::get('/kelola_nasabah', [NasabahController::class, 'index'])->name('nasabah.index');
+Route::post('/kelola_nasabah/store', [NasabahController::class, 'store'])->name('nasabah.store');
+Route::patch('/kelola_nasabah/{id}/status/{status}', [NasabahController::class, 'updateStatus'])->name('nasabah.updateStatus');
+Route::delete('/kelola_nasabah/{id}', [NasabahController::class, 'destroy'])->name('nasabah.destroy');
