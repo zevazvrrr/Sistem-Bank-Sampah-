@@ -8,7 +8,7 @@
 
     <title>Kelola Nasabah - Bank Sampah</title>
 
-    <link rel="stylesheet" href="{{ asset('css/nasabah.css') }}">
+    <link rel="stylesheet" href="{{ asset('kelola_nasabah.css') }}">
 </head>
 
 <body>
