@@ -8,3 +8,11 @@ Route::get('/', function () {
 });
 
 Route::get('/modul-1', [ModulSatuController::class, 'index']);
+
+Route::get('/auth/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

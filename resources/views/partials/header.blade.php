@@ -1,35 +1,55 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<header class="topbar">
 
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <div class="topbar-search">
+        <span class="icon-search"
+              style="width:18px;height:18px;display:flex">
 
-    <title>Login - Bank Sampah</title>
-</head>
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2">
 
-<body>
+                <circle cx="11" cy="11" r="7"/>
+                <path d="m20.5 20.5-4-4"/>
 
-<header class="header">
+            </svg>
+        </span>
 
-    <div class="login-logo">
-        <svg viewBox="0 0 24 24" width="40" height="40"
-             fill="none" stroke="white" stroke-width="2">
-
-            <path d="M7 3 3 7l4 4"/>
-            <path d="M3 7h11a5 5 0 0 1 5 5v1"/>
-            <path d="m17 21 4-4-4-4"/>
-            <path d="M21 17H10a5 5 0 0 1-5-5v-1"/>
-
-        </svg>
+        <input type="text" placeholder="Cari data">
     </div>
 
-    <h1 class="login-title">BANK SAMPAH</h1>
 
-    <p class="login-subtitle">
-        Layanan Bank Sampah Terpadu
-    </p>
+    <div class="topbar-icons">
+
+        <span class="icon-btn">
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2">
+
+                <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+
+            </svg>
+        </span>
+
+
+        <span class="icon-btn">
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2">
+
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M9.5 9a2.5 2.5 0 1 1 3.3 2.4c-.9.4-1.3 1-1.3 1.9"/>
+                <path d="M12 17.2h.01"/>
+
+            </svg>
+        </span>
+
+
+        <div class="avatar"></div>
+
+    </div>
 
 </header>
