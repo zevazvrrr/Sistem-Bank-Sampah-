@@ -34,14 +34,13 @@
         </li>
 
         <li>
-            <a href="nasabah.html" class="nav-link active">
+            <a href="/kelola_nasabah" class="nav-link">
                 <span class="nav-icon">
-                    <svg viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2">
-                        <circle cx="9" cy="8" r="3.2"/>
-                        <path d="M2.5 19c0-3.3 2.8-5.5 6.5-5.5s6.5 2.2 6.5 5.5"/>
-                        <circle cx="17" cy="8.5" r="2.6"/>
-                        <path d="M15.5 13.7c2.7.4 4.5 2.3 4.5 5.3"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
                 </span>
                 Kelola Nasabah

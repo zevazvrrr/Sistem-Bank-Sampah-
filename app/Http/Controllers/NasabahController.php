@@ -25,7 +25,7 @@ class NasabahController extends Controller
             });
         }
 
-        // Paginasi 5 data per halaman
+        // memunculkan 5 data per halaman
         $nasabah = $query->orderBy('id_nasabah', 'desc')->paginate(5);
 
         return view('kelola_nasabah', compact('nasabah'));
