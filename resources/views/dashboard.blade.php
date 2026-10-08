@@ -47,10 +47,6 @@
       <div>
         <h1>Ringkasan Statistik</h1>
       </div>
-      <button class="btn btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-        Input Baru
-      </button>
     </div>
 
     <div class="stat-grid">
