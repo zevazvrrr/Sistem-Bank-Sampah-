@@ -19,7 +19,7 @@
     <ul class="sidebar-nav">
 
         <li>
-            <a href="dashboard.html" class="nav-link">
+            <a href="{{ route('dashboard') }}" class="nav-link">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">
@@ -34,7 +34,7 @@
         </li>
 
         <li>
-            <a href="/kelola_nasabah" class="nav-link">
+            <a href="{{ route('nasabah.index') }}" class="nav-link">
                 <span class="nav-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -48,7 +48,7 @@
         </li>
 
         <li>
-            <a href="input-sampah.html" class="nav-link">
+            <a href="{{ route('input_sampah') }}" class="nav-link">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">

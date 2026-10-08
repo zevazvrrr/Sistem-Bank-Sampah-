@@ -19,9 +19,9 @@ class NasabahController extends Controller
 
         // Search berdasarkan Nama atau No Telp
         if ($request->has('search') && $request->search != '') {
-            $query->where(function($q) use ($request) {
-                $q->where('nama', 'like', '%' . $request->search . '%')
-                  ->orWhere('no_telp', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%'.$request->search.'%')
+                    ->orWhere('no_telp', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -34,20 +34,30 @@ class NasabahController extends Controller
     // 2. Tambah Nasabah Baru
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:100',
             'no_telp' => 'required|string|max:20',
             'alamat' => 'nullable|string|max:255',
         ]);
 
-        Nasabah::create([
-            'nama' => $request->nama,
-            'no_telp' => $request->no_telp,
-            'alamat' => $request->alamat,
-            'status' => 'aktif',
-        ]);
+        Nasabah::create($validated + ['status' => 'aktif']);
 
         return redirect()->back()->with('success', 'Nasabah berhasil ditambahkan!');
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $validated = $request->validate([
+            'nama' => 'required|string|max:100',
+            'no_telp' => 'required|string|max:20',
+            'alamat' => 'nullable|string|max:255',
+            'status' => 'required|in:aktif,tidak_aktif',
+        ]);
+
+        $nasabah = Nasabah::findOrFail($id);
+        $nasabah->update($validated);
+
+        return redirect()->route('nasabah.index')->with('success', 'Data nasabah berhasil diperbarui!');
     }
 
     // 3. Ubah Status Nasabah (Aktif / Tidak Aktif)

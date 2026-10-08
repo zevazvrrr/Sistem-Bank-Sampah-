@@ -31,6 +31,15 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if ($errors->any())
+            <div style="background-color: #fde8e8; color: #991b1b; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;">
+                <ul style="margin-left: 20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="breadcrumb">
             Beranda / <span class="current">Kelola Nasabah</span>
         </div>
@@ -116,6 +125,8 @@
                                             </form>
                                         @endif
 
+                                        <button type="button" onclick="document.getElementById('modalEdit-{{ $item->id_nasabah }}').style.display='flex'; toggleDropdown({{ $item->id_nasabah }})" style="width: 100%; text-align: left; padding: 8px 16px; background: none; border: none; color: #334155; cursor: pointer;">Edit Nasabah</button>
+
                                         <hr style="margin: 4px 0; border: none; border-top: 1px solid #eee;">
 
                                         <form action="{{ route('nasabah.destroy', $item->id_nasabah) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus nasabah ini?');">
@@ -164,17 +175,17 @@
                 @csrf
                 <div style="margin-bottom: 12px;">
                     <label style="display: block; margin-bottom: 4px; font-weight: 500;">Nama Nasabah</label>
-                    <input type="text" name="nama" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;" required>
+                    <input type="text" name="nama" value="{{ old('editing_nasabah_id') ? '' : old('nama') }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;" required>
                 </div>
 
                 <div style="margin-bottom: 12px;">
                     <label style="display: block; margin-bottom: 4px; font-weight: 500;">No. Telepon</label>
-                    <input type="text" name="no_telp" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;" required>
+                    <input type="text" name="no_telp" value="{{ old('editing_nasabah_id') ? '' : old('no_telp') }}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;" required>
                 </div>
 
                 <div style="margin-bottom: 16px;">
                     <label style="display: block; margin-bottom: 4px; font-weight: 500;">Alamat</label>
-                    <textarea name="alamat" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;" rows="3"></textarea>
+                    <textarea name="alamat" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;" rows="3">{{ old('editing_nasabah_id') ? '' : old('alamat') }}</textarea>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 8px;">
@@ -184,6 +195,50 @@
             </form>
         </div>
     </div>
+
+    @foreach ($nasabah as $item)
+        @php
+            $isEditingNasabah = (string) old('editing_nasabah_id') === (string) $item->id_nasabah;
+        @endphp
+        <div id="modalEdit-{{ $item->id_nasabah }}" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+            <div style="background: white; padding: 24px; border-radius: 12px; width: 400px; max-width: calc(100% - 32px); box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+                <h3 style="margin-top: 0; margin-bottom: 16px;">Edit Data Nasabah</h3>
+                <form action="{{ route('nasabah.update', $item->id_nasabah) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="editing_nasabah_id" value="{{ $item->id_nasabah }}">
+
+                    <div style="margin-bottom: 12px;">
+                        <label for="nama-{{ $item->id_nasabah }}" style="display: block; margin-bottom: 4px; font-weight: 500;">Nama Nasabah</label>
+                        <input id="nama-{{ $item->id_nasabah }}" type="text" name="nama" value="{{ $isEditingNasabah ? old('nama', $item->nama) : $item->nama }}" maxlength="100" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <label for="no-telp-{{ $item->id_nasabah }}" style="display: block; margin-bottom: 4px; font-weight: 500;">No. Telepon</label>
+                        <input id="no-telp-{{ $item->id_nasabah }}" type="text" name="no_telp" value="{{ $isEditingNasabah ? old('no_telp', $item->no_telp) : $item->no_telp }}" maxlength="20" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <label for="alamat-{{ $item->id_nasabah }}" style="display: block; margin-bottom: 4px; font-weight: 500;">Alamat</label>
+                        <textarea id="alamat-{{ $item->id_nasabah }}" name="alamat" maxlength="255" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">{{ $isEditingNasabah ? old('alamat', $item->alamat) : $item->alamat }}</textarea>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <label for="status-{{ $item->id_nasabah }}" style="display: block; margin-bottom: 4px; font-weight: 500;">Status</label>
+                        <select id="status-{{ $item->id_nasabah }}" name="status" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;">
+                            <option value="aktif" {{ ($isEditingNasabah ? old('status', $item->status) : $item->status) === 'aktif' ? 'selected' : '' }}>Aktif</option>
+                            <option value="tidak_aktif" {{ ($isEditingNasabah ? old('status', $item->status) : $item->status) === 'tidak_aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                        <button type="button" class="btn btn-outline" onclick="document.getElementById('modalEdit-{{ $item->id_nasabah }}').style.display='none'">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
 
     <script>
         function toggleDropdown(id) {
@@ -204,6 +259,14 @@
                 document.querySelectorAll('[id^="dropdown-"]').forEach(d => d.style.display = 'none');
             }
         }
+
+        @if ($errors->any())
+            @if (old('editing_nasabah_id'))
+                document.getElementById('modalEdit-{{ old('editing_nasabah_id') }}')?.style.setProperty('display', 'flex');
+            @else
+                document.getElementById('modalTambah').style.display = 'flex';
+            @endif
+        @endif
     </script>
 </body>
 </html>
