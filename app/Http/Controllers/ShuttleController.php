@@ -7,12 +7,8 @@ use Illuminate\Http\Request;
 
 class ShuttleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        // Logika Filtering berdasarkan input 'search' dari form
         $shuttles = Shuttle::when($request->search, function ($query, $search) {
             return $query->where('nama_armada', 'like', "%{$search}%");
         })->get();
@@ -20,37 +16,31 @@ class ShuttleController extends Controller
         return view('shuttles.index', compact('shuttles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('shuttles.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data armada shuttle baru ke dalam pangkalan data.
+     * Memvalidasi input sebelum operasi penyimpanan dilakukan.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        // Menyimpan data menggunakan Mass Assignment
+        $request->validate([
+            'nama_armada' => 'required|string|max:50',
+            'kapasitas' => 'required|numeric|min:10|max:60',
+            'rute_operasional' => 'required|string'
+        ]);
+
         Shuttle::create($request->all());
-
-        // Redirect kembali ke halaman index setelah simpan
-        return redirect()->route('shuttles.index');
+        
+        return redirect()->route('shuttles.index')->with('success', 'Data armada berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $shuttle = Shuttle::findOrFail($id);
@@ -58,18 +48,27 @@ class ShuttleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data armada shuttle di dalam pangkalan data.
+     * Memvalidasi input sebelum operasi pembaruan dilakukan.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'nama_armada' => 'required|string|max:50',
+            'kapasitas' => 'required|numeric|min:10|max:60',
+            'rute_operasional' => 'required|string'
+        ]);
+
         $shuttle = Shuttle::findOrFail($id);
         $shuttle->update($request->all());
-        return redirect()->route('shuttles.index');
+        
+        return redirect()->route('shuttles.index')->with('success', 'Data armada berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $shuttle = Shuttle::findOrFail($id);
