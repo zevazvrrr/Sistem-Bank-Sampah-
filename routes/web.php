@@ -61,3 +61,23 @@ Route::post('/kelola_nasabah/store', [NasabahController::class, 'store'])->name(
 Route::put('/kelola_nasabah/{id}', [NasabahController::class, 'update'])->name('nasabah.update');
 Route::patch('/kelola_nasabah/{id}/status/{status}', [NasabahController::class, 'updateStatus'])->name('nasabah.updateStatus');
 Route::delete('/kelola_nasabah/{id}', [NasabahController::class, 'destroy'])->name('nasabah.destroy');
+
+// =========================
+// RIWAYAT TRANSAKSI
+// =========================
+
+Route::get('/riwayat_transaksi', function () {
+    return view('riwayat_transaksi');
+})->name('riwayat_transaksi');
+
+Route::redirect('/riwayat-transaksi.html', '/riwayat_transaksi');
+
+// =========================
+// SALDO TABUNGAN
+// =========================
+
+Route::get('/saldo_tabungan', function () {
+    return view('saldo_tabungan');
+})->name('saldo_tabungan');
+
+Route::redirect('/saldo-tabungan.html', '/saldo_tabungan');
