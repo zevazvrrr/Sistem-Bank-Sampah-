@@ -19,7 +19,7 @@
     <ul class="sidebar-nav">
 
         <li>
-            <a href="{{ route('dashboard') }}" class="nav-link">
+            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">
@@ -34,7 +34,7 @@
         </li>
 
         <li>
-            <a href="{{ route('nasabah.index') }}" class="nav-link">
+            <a href="{{ route('nasabah.index') }}" class="nav-link {{ request()->routeIs('nasabah.*') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -48,7 +48,7 @@
         </li>
 
         <li>
-            <a href="{{ route('input_sampah') }}" class="nav-link">
+            <a href="{{ route('input_sampah') }}" class="nav-link {{ request()->routeIs('input_sampah') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">
@@ -62,7 +62,7 @@
         </li>
 
         <li>
-            <a href="riwayat-transaksi.html" class="nav-link">
+            <a href="{{ route('riwayat_transaksi') }}" class="nav-link {{ request()->routeIs('riwayat_transaksi') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">
@@ -75,7 +75,7 @@
         </li>
 
         <li>
-            <a href="saldo-tabungan.html" class="nav-link">
+            <a href="{{ route('saldo_tabungan') }}" class="nav-link {{ request()->routeIs('saldo_tabungan') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">
@@ -89,7 +89,7 @@
         </li>
 
         <li>
-            <a href="laporan.html" class="nav-link">
+            <a href="laporan.html" class="nav-link {{ request()->is('laporan*') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">
@@ -102,7 +102,7 @@
         </li>
 
         <li>
-            <a href="jenis-sampah.html" class="nav-link">
+            <a href="jenis-sampah.html" class="nav-link {{ request()->is('jenis-sampah*') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">
