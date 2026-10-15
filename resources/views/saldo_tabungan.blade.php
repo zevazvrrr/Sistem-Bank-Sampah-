@@ -8,7 +8,7 @@
     <title>Saldo Tabungan - Bank Sampah</title>
 
     {{-- PANGGILAN CSS --}}
-    <link rel="stylesheet" href="{{ asset('saldo-tabungan.css') }}">
+    <link rel="stylesheet" href="{{ asset('saldo_tabungan.css') }}">
 </head>
 
 <body>

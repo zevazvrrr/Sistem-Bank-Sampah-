@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Nasabah;
+
 class ModulSatuController extends Controller
 {
     // form login
@@ -49,6 +51,25 @@ class ModulSatuController extends Controller
     // dashboard
     public function dashboard()
     {
-        return view('dashboard');
+        // Data dari database
+        $totalNasabah = Nasabah::count();
+        $nasabahAktif = Nasabah::where('status', 'aktif')->count();
+
+        // Belum ada tabel transaksi/sampah/saldo, tampilkan 0
+        $totalTransaksi = 0;
+        $totalSampah = 0;
+        $totalSaldo = 0;
+
+        // 5 nasabah terbaru untuk tabel
+        $nasabahTerbaru = Nasabah::orderBy('created_at', 'desc')->take(5)->get();
+
+        return view('dashboard', compact(
+            'totalNasabah',
+            'nasabahAktif',
+            'totalTransaksi',
+            'totalSampah',
+            'totalSaldo',
+            'nasabahTerbaru'
+        ));
     }
 }

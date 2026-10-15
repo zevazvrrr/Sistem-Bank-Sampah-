@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ModulSatuController;
 use App\Http\Controllers\NasabahController;
+use App\Models\Nasabah;
 use Illuminate\Support\Facades\Route;
 
 // =========================
@@ -38,7 +39,8 @@ Route::get('/dashboard', [ModulSatuController::class, 'dashboard'])
 
 // Halaman Input Sampah
 Route::get('/input_sampah', function () {
-    return view('input_sampah');
+    $nasabah = Nasabah::orderBy('nama', 'asc')->get();
+    return view('input_sampah', compact('nasabah'));
 })->name('input_sampah');
 
 Route::redirect('/input-sampah.html', '/input_sampah');
