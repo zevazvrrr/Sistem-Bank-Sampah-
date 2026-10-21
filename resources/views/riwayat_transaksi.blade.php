@@ -46,16 +46,6 @@
                             </svg>
                             Filter Data
                         </button>
-
-                        <button class="btn btn-primary">
-                            <svg width="15" height="15" viewBox="0 0 24 24"
-                                fill="none" stroke="white" stroke-width="2">
-                                <path d="M12 3v12"/>
-                                <path d="m7 10 5 5 5-5"/>
-                                <path d="M4 21h16"/>
-                            </svg>
-                            Export Excel
-                        </button>
                     </div>
                 </div>
 

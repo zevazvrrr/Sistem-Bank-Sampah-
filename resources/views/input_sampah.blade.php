@@ -20,9 +20,6 @@
         <div class="page-header">
             <div>
                 <h1>Input Transaksi Sampah</h1>
-                <p class="subtitle">
-                    Catat setoran sampah nasabah secara real-time untuk pembaruan saldo instan.
-                </p>
             </div>
         </div>
 
@@ -155,10 +152,6 @@
 
                     </div>
 
-                    <div class="field notes-field" style="margin-top:20px">
-                        <textarea placeholder="Catatan transaksi (opsional)..."></textarea>
-                    </div>
-
                 </div>
 
             </div>
@@ -197,13 +190,9 @@
                     Konfirmasi Transaksi
                 </button>
 
-                <button class="btn-print" type="button" onclick="window.print()">
+                <button class="btn-print" type="button">
                     Cetak Bukti
                 </button>
-
-                <p class="wa-note">
-                    Sistem akan secara otomatis mengirimkan notifikasi WhatsApp ke Nasabah setelah konfirmasi.
-                </p>
 
                 <div class="card price-info-card">
 

@@ -108,10 +108,6 @@
           <span class="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Riwayat Transaksi</span>&rsaquo;
         </a>
       </div>
-      <div class="tips-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg>
-        <span><strong>Tips Admin:</strong> Pastikan timbangan dikalibrasi setiap pagi sebelum memulai operasional bank sampah.</span>
-      </div>
     </div>
 
   </main>
