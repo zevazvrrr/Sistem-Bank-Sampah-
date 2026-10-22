@@ -186,7 +186,7 @@
 
                 </div>
 
-                <button class="btn-confirm" type="button" onclick="konfirmasiTransaksi()">
+                <button class="btn-confirm" type="button" onclick="konfirmasiTransaksi()" id="btn-konfirmasi">
                     Konfirmasi Transaksi
                 </button>
 
@@ -424,15 +424,119 @@ function hitungSemua() {
 
 function konfirmasiTransaksi() {
     const idNasabah = hiddenId.value;
-    const searchVal = searchInput.value.trim();
+    const searchVal = searchInput ? searchInput.value.trim() : '';
 
-    if (!idNasabah && !searchVal) {
-        alert('Silakan pilih atau cari nasabah terlebih dahulu!');
-        searchInput.focus();
+    // Validasi: harus ada nasabah yang dipilih dari dropdown
+    if (!idNasabah) {
+        alert('Silakan pilih nasabah terlebih dahulu dari daftar!');
+        if (searchInput) searchInput.focus();
         return;
     }
 
-    alert('Transaksi berhasil dikonfirmasi!');
+    // Kumpulkan semua baris rincian
+    const list = document.getElementById('rincian-list');
+    const rows = list.querySelectorAll('.rincian-row');
+    const rincian = [];
+
+    let valid = true;
+    rows.forEach(row => {
+        const select    = row.querySelector('.jenis-sampah-select');
+        const beratInp  = row.querySelector('.berat-input');
+        const jenis     = select ? select.options[select.selectedIndex] : null;
+        const berat     = parseFloat(beratInp ? beratInp.value : 0) || 0;
+        const harga     = parseFloat(select ? select.value : 0) || 0;
+
+        if (!jenis || !jenis.value) {
+            alert('Pastikan semua baris sudah memilih jenis sampah!');
+            valid = false;
+            return;
+        }
+        if (berat <= 0) {
+            alert('Pastikan berat sampah pada setiap baris lebih dari 0!');
+            valid = false;
+            return;
+        }
+
+        rincian.push({
+            jenis_sampah : jenis.text.split(' (')[0], // ambil nama saja, tanpa "(Rp ...)"
+            berat_kg     : berat,
+            harga_per_kg : harga,
+            subtotal     : Math.round(harga * berat),
+        });
+    });
+
+    if (!valid || rincian.length === 0) return;
+
+    // Tanggal transaksi
+    const tanggal = document.getElementById('tanggal-transaksi')
+        ? document.getElementById('tanggal-transaksi').value
+        : new Date().toISOString().split('T')[0];
+
+    // Catatan (opsional)
+    const textarea = document.querySelector('.notes-field textarea');
+    const catatan  = textarea ? textarea.value.trim() : '';
+
+    // Nonaktifkan tombol sementara
+    const btn = document.getElementById('btn-konfirmasi');
+    if (btn) {
+        btn.disabled    = true;
+        btn.textContent = 'Menyimpan...';
+    }
+
+    // Kirim ke server via AJAX
+    fetch("{{ route('transaksi_sampah.store') }}", {
+        method  : 'POST',
+        headers : {
+            'Content-Type'     : 'application/json',
+            'X-CSRF-TOKEN'     : '{{ csrf_token() }}',
+            'Accept'           : 'application/json',
+        },
+        body: JSON.stringify({
+            id_nasabah        : idNasabah,
+            tanggal_transaksi : tanggal,
+            catatan           : catatan,
+            rincian           : rincian,
+        }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('✅ ' + data.message);
+
+            // Reset form setelah berhasil
+            if (searchInput) searchInput.value = '';
+            if (hiddenId)    hiddenId.value     = '';
+            if (clearBtn)    clearBtn.style.display = 'none';
+
+            // Reset rincian ke 1 baris kosong
+            const listEl = document.getElementById('rincian-list');
+            listEl.innerHTML = listEl.querySelector('.rincian-row').outerHTML;
+            listEl.querySelector('.berat-input').value = '';
+            listEl.querySelector('.jenis-sampah-select').selectedIndex = 0;
+            const sv = listEl.querySelector('.subtotal-val');
+            if (sv) sv.innerText = 'Rp 0';
+
+            if (textarea) textarea.value = '';
+
+            hitungSemua();
+
+            // Reset preview
+            const totalDisp = document.getElementById('preview-total-display');
+            if (totalDisp) totalDisp.innerText = 'Rp 0';
+        } else {
+            alert('❌ Gagal menyimpan transaksi: ' + (data.message || 'Terjadi kesalahan.'));
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('❌ Terjadi kesalahan jaringan. Silakan coba lagi.');
+    })
+    .finally(() => {
+        if (btn) {
+            btn.disabled    = false;
+            btn.textContent = 'Konfirmasi Transaksi';
+        }
+    });
 }
 </script>
 

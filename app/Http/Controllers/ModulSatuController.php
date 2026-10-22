@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Nasabah;
+use App\Models\TransaksiSampah;
 
 class ModulSatuController extends Controller
 {
@@ -52,13 +53,13 @@ class ModulSatuController extends Controller
     public function dashboard()
     {
         // Data dari database
-        $totalNasabah = Nasabah::count();
-        $nasabahAktif = Nasabah::where('status', 'aktif')->count();
+        $totalNasabah    = Nasabah::count();
+        $nasabahAktif    = Nasabah::where('status', 'aktif')->count();
 
-        // Belum ada tabel transaksi/sampah/saldo, tampilkan 0
-        $totalTransaksi = 0;
-        $totalSampah = 0;
-        $totalSaldo = 0;
+        // Data transaksi dari tabel transaksi_sampah
+        $totalTransaksi  = TransaksiSampah::count();
+        $totalSampah     = TransaksiSampah::sum('berat_kg');   // total berat (kg) semua transaksi
+        $totalSaldo      = TransaksiSampah::sum('subtotal');   // total nilai rupiah semua transaksi
 
         // 5 nasabah terbaru untuk tabel
         $nasabahTerbaru = Nasabah::orderBy('created_at', 'desc')->take(5)->get();

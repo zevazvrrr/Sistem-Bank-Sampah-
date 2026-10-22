@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ModulSatuController;
 use App\Http\Controllers\NasabahController;
+use App\Http\Controllers\TransaksiSampahController;
 use App\Models\Nasabah;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,9 @@ Route::get('/input_sampah', function () {
 })->name('input_sampah');
 
 Route::redirect('/input-sampah.html', '/input_sampah');
+
+// Simpan transaksi sampah (AJAX dari halaman input_sampah)
+Route::post('/transaksi_sampah', [TransaksiSampahController::class, 'store'])->name('transaksi_sampah.store');
 
 // =========================
 // HALAMAN UTAMA
