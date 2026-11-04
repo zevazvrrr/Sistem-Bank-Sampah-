@@ -37,16 +37,6 @@
                             Monitoring data setoran sampah dan konversi nilai tabungan nasabah.
                         </p>
                     </div>
-
-                    <div style="display:flex;gap:12px">
-                        <button class="btn btn-outline">
-                            <svg width="15" height="15" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 5h18M6 12h12M10 19h4"/>
-                            </svg>
-                            Filter Data
-                        </button>
-                    </div>
                 </div>
 
                 {{-- STATISTIK --}}
@@ -54,28 +44,26 @@
 
                     <div class="stat-card">
                         <div class="stat-label">Transaksi Hari Ini</div>
-                        <div class="stat-value">42</div>
-                        <div class="stat-sub" style="color:var(--success)">
-                            &#8599; +12% from yesterday
-                        </div>
+                        <div class="stat-value">{{ $transaksiHariIni }}</div>
+                        <div class="stat-sub">Total transaksi hari ini</div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-label">Total Berat Sampah</div>
-                        <div class="stat-value">1.284 kg</div>
-                        <div class="stat-sub">Cumulative monthly total</div>
+                        <div class="stat-value">{{ number_format($totalBeratSampah, 1) }} kg</div>
+                        <div class="stat-sub">Kumulatif semua transaksi</div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-label">Volume Tabungan</div>
-                        <div class="stat-value">Rp 4.5M</div>
-                        <div class="stat-sub">Total active balance</div>
+                        <div class="stat-value">Rp {{ number_format($totalVolTabungan, 0, ',', '.') }}</div>
+                        <div class="stat-sub">Total nilai tabungan aktif</div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-label">Nasabah Aktif</div>
-                        <div class="stat-value">156</div>
-                        <div class="stat-sub">Registered in district area</div>
+                        <div class="stat-value">{{ $nasabahAktif }}</div>
+                        <div class="stat-sub">Terdaftar di wilayah</div>
                     </div>
 
                 </div>
@@ -83,21 +71,70 @@
                 {{-- TABEL RIWAYAT TRANSAKSI --}}
                 <div class="card table-card">
 
-                    <div class="filter-bar">
-                        <div class="filter-left">
-                            <select class="chip-select">
-                                <option>Semua Kategori</option>
-                            </select>
+                    {{-- FILTER BAR --}}
+                    <form method="GET" action="{{ route('riwayat_transaksi') }}">
+                        <div class="filter-bar">
+                            <div class="filter-left">
 
-                            <select class="chip-select">
-                                <option>7 Hari Terakhir</option>
-                            </select>
+                                {{-- Filter Jenis Sampah --}}
+                                <select name="jenis" class="chip-select" onchange="this.form.submit()">
+                                    <option value="">Semua Kategori</option>
+                                    @foreach($daftarJenis as $j)
+                                        <option value="{{ $j }}" {{ request('jenis') == $j ? 'selected' : '' }}>
+                                            {{ $j }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                {{-- Filter Tanggal Dari --}}
+                                <input
+                                    type="date"
+                                    name="dari"
+                                    class="chip-select"
+                                    value="{{ request('dari') }}"
+                                    placeholder="Dari tanggal"
+                                >
+
+                                {{-- Filter Tanggal Sampai --}}
+                                <input
+                                    type="date"
+                                    name="sampai"
+                                    class="chip-select"
+                                    value="{{ request('sampai') }}"
+                                    placeholder="Sampai tanggal"
+                                >
+
+                                {{-- Search Nasabah --}}
+                                <input
+                                    type="text"
+                                    name="search"
+                                    class="chip-select"
+                                    value="{{ request('search') }}"
+                                    placeholder="Cari nama nasabah..."
+                                    style="min-width:180px"
+                                >
+
+                                <button type="submit" class="btn btn-primary" style="padding:10px 18px;font-size:13.5px">
+                                    Cari
+                                </button>
+
+                                @if(request()->hasAny(['jenis','dari','sampai','search']))
+                                    <a href="{{ route('riwayat_transaksi') }}" class="btn btn-outline" style="padding:10px 18px;font-size:13.5px">
+                                        Reset
+                                    </a>
+                                @endif
+                            </div>
+
+                            <span class="entries-info">
+                                @if($transaksi->total() > 0)
+                                    Menampilkan {{ $transaksi->firstItem() }}–{{ $transaksi->lastItem() }}
+                                    dari {{ $transaksi->total() }} transaksi
+                                @else
+                                    Tidak ada data
+                                @endif
+                            </span>
                         </div>
-
-                        <span class="entries-info">
-                            Showing 1-10 of 1,245 entries
-                        </span>
-                    </div>
+                    </form>
 
                     <table>
                         <thead>
@@ -108,24 +145,24 @@
                                 <th>Berat (kg)</th>
                                 <th>Total Nilai (Rp)</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            @forelse($transaksi as $t)
                             <tr>
-                                <td>24 Okt 2026, 10:30</td>
+                                <td>{{ $t->created_at->format('d M Y, H:i') }}</td>
                                 <td style="color:var(--primary-dark);font-weight:600">
-                                    Budi Santoso
+                                    {{ $t->nasabah->nama ?? '-' }}
                                 </td>
-                                <td><span class="jenis-tag">Plastik PET</span></td>
-                                <td>12.5 kg</td>
-                                <td>Rp 37.500</td>
+                                <td><span class="jenis-tag">{{ $t->jenis_sampah }}</span></td>
+                                <td>{{ number_format($t->berat_kg, 1) }} kg</td>
+                                <td>Rp {{ number_format($t->subtotal, 0, ',', '.') }}</td>
                                 <td>
                                     <span class="status-pill status-success">SELESAI</span>
                                 </td>
                                 <td>
-                                    <button class="eye-btn">
+                                    <button class="eye-btn" title="Lihat Detail">
                                         <svg width="15" height="15" viewBox="0 0 24 24"
                                             fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/>
@@ -134,109 +171,73 @@
                                     </button>
                                 </td>
                             </tr>
-
+                            @empty
                             <tr>
-                                <td>24 Okt 2026, 11:15</td>
-                                <td style="color:var(--primary-dark);font-weight:600">
-                                    Ani Wijaya
-                                </td>
-                                <td><span class="jenis-tag">Kertas Karton</span></td>
-                                <td>5.2 kg</td>
-                                <td>Rp 10.400</td>
-                                <td>
-                                    <span class="status-pill status-success">SELESAI</span>
-                                </td>
-                                <td>
-                                    <button class="eye-btn">
-                                        <svg width="15" height="15" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
+                                <td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">
+                                    <div style="font-size:15px;font-weight:600;margin-bottom:6px">Belum ada data transaksi.</div>
+                                    <div style="font-size:13px">Silakan input sampah terlebih dahulu melalui menu Input Sampah.</div>
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td>24 Okt 2026, 13:45</td>
-                                <td style="color:var(--primary-dark);font-weight:600">
-                                    Dedi Kurniawan
-                                </td>
-                                <td><span class="jenis-tag">Logam Besi</span></td>
-                                <td>2.0 kg</td>
-                                <td>Rp 16.000</td>
-                                <td>
-                                    <span class="status-pill status-warning">MENUNGGU</span>
-                                </td>
-                                <td>
-                                    <button class="eye-btn">
-                                        <svg width="15" height="15" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>23 Okt 2026, 09:20</td>
-                                <td style="color:var(--primary-dark);font-weight:600">
-                                    Lestari Putri
-                                </td>
-                                <td><span class="jenis-tag">Plastik PET</span></td>
-                                <td>8.7 kg</td>
-                                <td>Rp 26.100</td>
-                                <td>
-                                    <span class="status-pill status-success">SELESAI</span>
-                                </td>
-                                <td>
-                                    <button class="eye-btn">
-                                        <svg width="15" height="15" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>23 Okt 2026, 15:10</td>
-                                <td style="color:var(--primary-dark);font-weight:600">
-                                    Rizky Ramadhan
-                                </td>
-                                <td><span class="jenis-tag">Organik</span></td>
-                                <td>20.0 kg</td>
-                                <td>Rp 10.000</td>
-                                <td>
-                                    <span class="status-pill status-danger">DIBATALKAN</span>
-                                </td>
-                                <td>
-                                    <button class="eye-btn">
-                                        <svg width="15" height="15" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/>
-                                            <circle cx="12" cy="12" r="3"/>
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
 
                     {{-- PAGINATION --}}
                     <div class="table-footer">
-                        <span></span>
+                        <span style="font-size:13.5px;color:var(--text-muted)">
+                            Halaman {{ $transaksi->currentPage() }} dari {{ $transaksi->lastPage() }}
+                        </span>
 
                         <div class="pagination">
-                            <button>&lt;</button>
-                            <button class="active">1</button>
-                            <button>2</button>
-                            <button>3</button>
-                            <span style="padding:0 4px">...</span>
-                            <button>125</button>
-                            <button>&gt;</button>
+                            {{-- Tombol Prev --}}
+                            @if($transaksi->onFirstPage())
+                                <button disabled style="opacity:0.4;cursor:not-allowed">&lt;</button>
+                            @else
+                                <a href="{{ $transaksi->previousPageUrl() }}" class="pagination-link">
+                                    <button>&lt;</button>
+                                </a>
+                            @endif
+
+                            {{-- Nomor Halaman --}}
+                            @php
+                                $start = max(1, $transaksi->currentPage() - 2);
+                                $end   = min($transaksi->lastPage(), $transaksi->currentPage() + 2);
+                            @endphp
+
+                            @if($start > 1)
+                                <a href="{{ $transaksi->url(1) }}" class="pagination-link"><button>1</button></a>
+                                @if($start > 2)
+                                    <span style="padding:0 4px">...</span>
+                                @endif
+                            @endif
+
+                            @for($p = $start; $p <= $end; $p++)
+                                @if($p == $transaksi->currentPage())
+                                    <button class="active">{{ $p }}</button>
+                                @else
+                                    <a href="{{ $transaksi->url($p) }}" class="pagination-link">
+                                        <button>{{ $p }}</button>
+                                    </a>
+                                @endif
+                            @endfor
+
+                            @if($end < $transaksi->lastPage())
+                                @if($end < $transaksi->lastPage() - 1)
+                                    <span style="padding:0 4px">...</span>
+                                @endif
+                                <a href="{{ $transaksi->url($transaksi->lastPage()) }}" class="pagination-link">
+                                    <button>{{ $transaksi->lastPage() }}</button>
+                                </a>
+                            @endif
+
+                            {{-- Tombol Next --}}
+                            @if($transaksi->hasMorePages())
+                                <a href="{{ $transaksi->nextPageUrl() }}" class="pagination-link">
+                                    <button>&gt;</button>
+                                </a>
+                            @else
+                                <button disabled style="opacity:0.4;cursor:not-allowed">&gt;</button>
+                            @endif
                         </div>
                     </div>
 

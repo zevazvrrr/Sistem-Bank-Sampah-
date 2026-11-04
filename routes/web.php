@@ -3,6 +3,7 @@
 use App\Http\Controllers\ModulSatuController;
 use App\Http\Controllers\NasabahController;
 use App\Http\Controllers\TransaksiSampahController;
+use App\Http\Controllers\LaporanController;
 use App\Models\Nasabah;
 use Illuminate\Support\Facades\Route;
 
@@ -72,9 +73,7 @@ Route::delete('/kelola_nasabah/{id}', [NasabahController::class, 'destroy'])->na
 // RIWAYAT TRANSAKSI
 // =========================
 
-Route::get('/riwayat_transaksi', function () {
-    return view('riwayat_transaksi');
-})->name('riwayat_transaksi');
+Route::get('/riwayat_transaksi', [TransaksiSampahController::class, 'index'])->name('riwayat_transaksi');
 
 Route::redirect('/riwayat-transaksi.html', '/riwayat_transaksi');
 
@@ -96,10 +95,12 @@ Route::get('/jenis_sampah', function () {
     return view('jenis_sampah');
 })->name('jenis_sampah');
 
+Route::redirect('/jenis-sampah.html', '/jenis_sampah');
+
 // =========================
 // LAPORAN
 // =========================
 
-Route::get('/laporan', function () {
-    return view('laporan');
-})->name('laporan');
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+
+Route::redirect('/laporan.html', '/laporan');

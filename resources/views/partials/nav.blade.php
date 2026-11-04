@@ -89,7 +89,7 @@
         </li>
 
         <li>
-            <a href="laporan.html" class="nav-link {{ request()->is('laporan*') ? 'active' : '' }}">
+            <a href="{{ route('laporan') }}" class="nav-link {{ request()->routeIs('laporan') || request()->is('laporan*') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">
@@ -102,7 +102,7 @@
         </li>
 
         <li>
-            <a href="jenis-sampah.html" class="nav-link {{ request()->is('jenis-sampah*') ? 'active' : '' }}">
+            <a href="{{ route('jenis_sampah') }}" class="nav-link {{ request()->routeIs('jenis_sampah') || request()->is('jenis-sampah*') ? 'active' : '' }}">
                 <span class="nav-icon">
                     <svg viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2">

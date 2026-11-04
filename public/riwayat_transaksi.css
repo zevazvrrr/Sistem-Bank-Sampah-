@@ -475,3 +475,21 @@ tbody tr:last-child td { border-bottom: none; }
   justify-content: center;
   color: var(--text-muted);
 }
+
+/* pagination link wrapper */
+a.pagination-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* date input filter */
+input[type="date"].chip-select {
+  color: var(--text-body);
+}
+input[type="text"].chip-select {
+  outline: none;
+}
+input[type="text"].chip-select:focus {
+  border-color: var(--primary);
+}
+

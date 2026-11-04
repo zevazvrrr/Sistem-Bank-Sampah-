@@ -518,3 +518,93 @@ tbody tr:last-child td { border-bottom: none; }
   justify-content: center;
   box-shadow: 0 4px 14px rgba(0,0,0,0.2);
 }
+
+/* =============================================
+   PRINT MEDIA STYLES - Cetak Laporan
+   ============================================= */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1.5cm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 12pt;
+  }
+
+  .sidebar,
+  .topbar,
+  .page-header,
+  .scroll-top-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  .app {
+    display: block !important;
+    min-height: auto !important;
+  }
+
+  .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .card.laporan-sheet {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .laporan-topbar {
+    border-bottom: 2px solid #065f34 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .laporan-logo {
+    background: #0d7a41 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .laporan-stat-box {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .laporan-table {
+    width: 100% !important;
+    border: 1px solid #e2e8f0;
+  }
+
+  .laporan-table thead th {
+    background: #f1f5f9 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .laporan-table tbody tr.total-row td {
+    background: #e8f5ee !important;
+    color: #065f34 !important;
+    font-weight: 800 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .kategori-tag {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+    border: 1px solid #cbd5e1 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+

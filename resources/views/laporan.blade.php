@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -23,14 +22,27 @@
                 <h1>Cetak Laporan</h1>
             </div>
 
-            <button class="btn btn-primary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                    <path d="M6 9V3h12v6"/>
-                    <rect x="4" y="9" width="16" height="8" rx="1"/>
-                    <path d="M7 21h10v-4H7z"/>
-                </svg>
-                Cetak Laporan
-            </button>
+            <div class="no-print" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                {{-- Filter Periode --}}
+                <form method="GET" action="{{ route('laporan') }}" style="display:flex;align-items:center;gap:8px;">
+                    <select name="bulan" class="chip-select" onchange="this.form.submit()" style="border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:10px 14px;font-size:13.5px;background:#fff;color:var(--text-body);cursor:pointer;">
+                        <option value="semua" {{ $periode == 'semua' ? 'selected' : '' }}>Semua Periode</option>
+                        <option value="bulan_ini" {{ $periode == 'bulan_ini' ? 'selected' : '' }}>Bulan Ini</option>
+                        <option value="bulan_lalu" {{ $periode == 'bulan_lalu' ? 'selected' : '' }}>Bulan Lalu</option>
+                        <option value="hari_ini" {{ $periode == 'hari_ini' ? 'selected' : '' }}>Hari Ini</option>
+                    </select>
+                </form>
+
+                {{-- Tombol Cetak Laporan --}}
+                <button type="button" class="btn btn-primary" onclick="window.print()" title="Cetak Laporan / Simpan PDF">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M6 9V3h12v6"/>
+                        <rect x="4" y="9" width="16" height="8" rx="1"/>
+                        <path d="M7 21h10v-4H7z"/>
+                    </svg>
+                    Cetak Laporan
+                </button>
+            </div>
         </div>
 
         <div class="card laporan-sheet">
@@ -51,8 +63,8 @@
                 </div>
 
                 <div class="laporan-period">
-                    <div class="tag">LAPORAN BULANAN</div>
-                    <div class="range">Periode: 01 Juni 2026 - 30 Juni 2026</div>
+                    <div class="tag">LAPORAN {{ $tipeLaporan }}</div>
+                    <div class="range">Periode: {{ $periodeText }}</div>
                 </div>
 
             </div>
@@ -61,22 +73,22 @@
 
                 <div class="laporan-stat-box">
                     <div class="lbl">Total Setoran</div>
-                    <div class="val">1,248 kg</div>
+                    <div class="val">{{ number_format($totalSetoran, 1) }} kg</div>
                 </div>
 
                 <div class="laporan-stat-box">
                     <div class="lbl">Total Transaksi</div>
-                    <div class="val">156</div>
+                    <div class="val">{{ number_format($totalTransaksi) }}</div>
                 </div>
 
                 <div class="laporan-stat-box">
                     <div class="lbl">Dana Keluar</div>
-                    <div class="val danger">Rp 4.2M</div>
+                    <div class="val danger">Rp {{ number_format($danaKeluar, 0, ',', '.') }}</div>
                 </div>
 
                 <div class="laporan-stat-box">
                     <div class="lbl">Nasabah Aktif</div>
-                    <div class="val">82</div>
+                    <div class="val">{{ number_format($nasabahAktif) }}</div>
                 </div>
 
             </div>
@@ -95,43 +107,27 @@
                 </thead>
 
                 <tbody>
+                    @forelse($ringkasan as $item)
                     <tr>
-                        <td>Plastik PET</td>
-                        <td><span class="kategori-tag">ANORGANIK</span></td>
-                        <td>452.5</td>
-                        <td>Rp 3.500</td>
-                        <td>Rp 1.583.750</td>
+                        <td style="font-weight:600;color:var(--text-navy)">{{ $item->jenis_sampah }}</td>
+                        <td><span class="kategori-tag">{{ $item->kategori }}</span></td>
+                        <td>{{ number_format($item->total_volume, 1) }}</td>
+                        <td>Rp {{ number_format($item->harga_rata_rata ?? 0, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_nilai, 0, ',', '.') }}</td>
                     </tr>
-
+                    @empty
                     <tr>
-                        <td>Kertas HVS</td>
-                        <td><span class="kategori-tag">ANORGANIK</span></td>
-                        <td>215.0</td>
-                        <td>Rp 2.800</td>
-                        <td>Rp 602.000</td>
+                        <td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">
+                            Belum ada data transaksi sampah untuk periode ini.
+                        </td>
                     </tr>
-
-                    <tr>
-                        <td>Logam/Besi</td>
-                        <td><span class="kategori-tag">LOGAM</span></td>
-                        <td>120.8</td>
-                        <td>Rp 8.500</td>
-                        <td>Rp 1.026.800</td>
-                    </tr>
-
-                    <tr>
-                        <td>Kardus Bekas</td>
-                        <td><span class="kategori-tag">ANORGANIK</span></td>
-                        <td>380.0</td>
-                        <td>Rp 2.000</td>
-                        <td>Rp 760.000</td>
-                    </tr>
+                    @endforelse
 
                     <tr class="total-row">
                         <td colspan="2">TOTAL KESELURUHAN</td>
-                        <td>1,168.3 Kg</td>
+                        <td>{{ number_format($totalKeseluruhanVolume, 1) }} Kg</td>
                         <td></td>
-                        <td>Rp 3.972.550</td>
+                        <td>Rp {{ number_format($totalKeseluruhanNilai, 0, ',', '.') }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -144,7 +140,7 @@
 
         </div>
 
-        <button class="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <button class="scroll-top-btn no-print" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Kembali ke atas">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
                 <path d="m5 12 7-7 7 7"/>
                 <path d="M12 5v14"/>
