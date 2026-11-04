@@ -87,3 +87,19 @@ Route::get('/saldo_tabungan', function () {
 })->name('saldo_tabungan');
 
 Route::redirect('/saldo-tabungan.html', '/saldo_tabungan');
+
+// =========================
+// JENIS SAMPAH
+// =========================
+
+Route::get('/jenis_sampah', function () {
+    return view('jenis_sampah');
+})->name('jenis_sampah');
+
+// =========================
+// LAPORAN
+// =========================
+
+Route::get('/laporan', function () {
+    return view('laporan');
+})->name('laporan');
