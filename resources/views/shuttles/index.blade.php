@@ -46,6 +46,8 @@
             @endforelse
         </tbody>
     </table>
+    <br>
+    <a href="{{ route('shuttles.exportPdf') }}" target="_blank">📄 Unduh Laporan PDF</a>
 
 </body>
 </html>

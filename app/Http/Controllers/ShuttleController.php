@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Shuttle;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf; //praktikum 10 no 1
 
 class ShuttleController extends Controller
 {
@@ -74,5 +75,20 @@ class ShuttleController extends Controller
         $shuttle = Shuttle::findOrFail($id);
         $shuttle->delete();
         return redirect()->route('shuttles.index');
+    }
+
+    /**
+     * 2. Method baru untuk mengekspor data armada shuttle ke bentuk PDF[cite: 3]
+     */
+    public function exportPdf()
+    {
+        // Mengambil seluruh data armada shuttle[cite: 3]
+        $shuttles = Shuttle::all(); 
+
+        // Memuat tampilan view_pdf dan mengirimkan variabel $shuttles[cite: 3]
+        $pdf = Pdf::loadView('shuttles.view_pdf', compact('shuttles'));
+
+        // Mengunduh dokumen PDF[cite: 3]
+        return $pdf->download('laporan-armada-shuttle.pdf');
     }
 }
