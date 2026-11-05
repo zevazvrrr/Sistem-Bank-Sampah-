@@ -145,6 +145,7 @@
                                 <th>Berat (kg)</th>
                                 <th>Total Nilai (Rp)</th>
                                 <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
 
